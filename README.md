@@ -40,7 +40,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	res, err := client.CreatePaymentRequest(&swish.PaymentRequest{
+	res, err := client.CreatePayment(&swish.PaymentData{
 		CallbackURL:           "https://example.com/api/swishcb/paymentrequests",
 		PayeePaymentReference: "0123456789",
 		PayeeAlias:            "1231181189",
@@ -55,7 +55,7 @@ func main() {
 
 	log.Println(res.ID)
 
-	res, err = client.PaymentRequest(res.ID)
+	res, err = client.Payment(res.ID)
 
 	if err != nil {
 		log.Fatal(err)
