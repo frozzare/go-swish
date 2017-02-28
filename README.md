@@ -41,7 +41,7 @@ func main() {
 	}
 
 	res, err := client.CreatePaymentRequest(&swish.PaymentRequest{
-		CallbackURL:           "http://localhost/swish",
+		CallbackURL:           "https://example.com/api/swishcb/paymentrequests",
 		PayeePaymentReference: "0123456789",
 		PayeeAlias:            "1231181189",
 		Amount:                100,
