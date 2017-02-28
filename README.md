@@ -19,7 +19,7 @@ You will also need a client certificate and corresponding private key so the Swi
 
 Certificates in `certs` directory is the test certificates from Swish and cannot be used in production.
 
-```
+```go
 package main
 
 import (
