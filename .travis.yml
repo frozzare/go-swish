@@ -5,13 +5,5 @@ go:
  - 1.8
  - tip
 
-before_install:
-  - sudo add-apt-repository ppa:masterminds/glide -y
-  - sudo apt-get update -q
-  - sudo apt-get install glide -y
-
-install:
-  - glide install
-
 script:
  - go test -race $(go list ./... | grep -v /vendor/)
