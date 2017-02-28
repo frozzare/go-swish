@@ -2,7 +2,7 @@
 
 > Work in progress
 
-Go package for deailing with [Swish](https://www.getswish.se/).
+Go package for deailing with [Swish](https://www.getswish.se/) merchant API.
 
 ## Installation
 
