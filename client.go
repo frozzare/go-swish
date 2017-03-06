@@ -117,8 +117,6 @@ func (s *Client) createRequest(method, endpoint string, data interface{}) (*http
 			return nil, err
 		}
 
-		//	fmt.Println(string(j))
-
 		body = bytes.NewBuffer(j)
 	}
 
