@@ -43,7 +43,7 @@ func main() {
 		CallbackURL:           "https://example.com/api/swishcb/paymentrequests",
 		PayeePaymentReference: "0123456789",
 		PayeeAlias:            "1231181189",
-		Amount:                100.00,
+		Amount:                "100.00",
 		Currency:              "SEK",
 		Message:               "Kingston USB Flash Drive 8 GB",
 	})
