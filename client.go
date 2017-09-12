@@ -2,6 +2,7 @@ package swish
 
 import (
 	"bytes"
+	"context"
 	"crypto/tls"
 	"crypto/x509"
 	"encoding/json"
@@ -39,7 +40,7 @@ type Error struct {
 // NewClient creats a new Swish client.
 func NewClient(opts *Options) (*Client, error) {
 	if opts.Client == nil {
-		opts.Client = &http.Client{}
+		opts.Client = http.DefaultClient
 	}
 
 	cfg, err := createTLSConfig(opts)
@@ -107,7 +108,7 @@ func createTLSConfig(opts *Options) (*tls.Config, error) {
 }
 
 // createRequest will create a http request with given method to the given endpoint with the given data.
-func (s *Client) createRequest(method, endpoint string, data interface{}) (*http.Response, error) {
+func (s *Client) createRequest(ctx context.Context, method, endpoint string, data interface{}) (*http.Response, error) {
 	var body io.Reader
 
 	if data != nil {
@@ -129,16 +130,24 @@ func (s *Client) createRequest(method, endpoint string, data interface{}) (*http
 	req.Header.Add("Accept", "application/json")
 	req.Header.Add("Content-Type", "application/json")
 
-	res, err := s.Client.Do(req)
+	res, err := s.Client.Do(req.WithContext(ctx))
 
 	if err != nil {
+		// If we got an error, and the context has been canceled,
+		// the context's error is probably more useful.
+		select {
+		case <-ctx.Done():
+			return nil, ctx.Err()
+		default:
+		}
+
 		return nil, err
 	}
 
 	if res.StatusCode != 200 && res.StatusCode != 201 {
 		var errs []Error
 
-		readJSON(res, &errs)
+		readChuncked(res, &errs)
 
 		if len(errs) > 0 {
 			return res, errors.New(errs[0].ErrorMessage)
@@ -150,8 +159,12 @@ func (s *Client) createRequest(method, endpoint string, data interface{}) (*http
 	return res, nil
 }
 
-func readJSON(res *http.Response, target interface{}) error {
-	defer res.Body.Close()
+func readChuncked(res *http.Response, target interface{}) error {
+	defer func() {
+		// Drain up to 512 bytes and close the body to let the Transport reuse the connection.
+		io.CopyN(ioutil.Discard, res.Body, 512)
+		res.Body.Close()
+	}()
 
 	var buf bytes.Buffer
 	if _, err := buf.ReadFrom(res.Body); err != nil {

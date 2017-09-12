@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"io"
 	"io/ioutil"
@@ -28,11 +29,11 @@ func init() {
 }
 
 func create(w http.ResponseWriter, r *http.Request) {
-	res, err := client.CreatePayment(&swish.PaymentData{
+	res, err := client.CreatePaymentRequest(context.Background(), &swish.PaymentRequest{
 		CallbackURL:           "https://c06610e4.ngrok.io",
 		PayeePaymentReference: "0123456789",
 		PayeeAlias:            "1231181189",
-		Amount:                100.00,
+		Amount:                "100.00",
 		Currency:              "SEK",
 		Message:               "Kingston USB Flash Drive 8 GB",
 	})
@@ -46,7 +47,7 @@ func create(w http.ResponseWriter, r *http.Request) {
 }
 
 func status(w http.ResponseWriter, r *http.Request) {
-	res, err := client.Payment(r.URL.Query().Get("id"))
+	res, err := client.PaymentRequest(context.Background(), r.URL.Query().Get("id"))
 
 	if err != nil {
 		http.Error(w, err.Error(), 500)

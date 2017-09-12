@@ -1,6 +1,7 @@
 package swish
 
 import (
+	"context"
 	"errors"
 	"net/http"
 	"testing"
@@ -18,7 +19,7 @@ func TestCreatePaymentRequest(t *testing.T) {
 	tests := []struct {
 		description    string
 		responder      func(req *http.Request) (*http.Response, error)
-		expectedResult *PaymentData
+		expectedResult *PaymentRequest
 		expectedError  error
 	}{
 		{
@@ -30,13 +31,13 @@ func TestCreatePaymentRequest(t *testing.T) {
 
 				return resp, nil
 			},
-			expectedResult: &PaymentData{
+			expectedResult: &PaymentRequest{
 				ID: "AB23D7406ECE4542A80152D909EF9F6B",
 				PayeePaymentReference: "0123456789",
 				CallbackURL:           "https://example.com/api/swishcb/paymentrequests",
 				PayerAlias:            "46701234567",
 				PayeeAlias:            "1234760039",
-				Amount:                100.00,
+				Amount:                "100",
 				Currency:              "SEK",
 				Message:               "Kingston USB Flash Drive 8 GB",
 			},
@@ -76,12 +77,12 @@ func TestCreatePaymentRequest(t *testing.T) {
 	for _, test := range tests {
 		httpmock.RegisterResponder("POST", "https://mss.swicpc.bankgirot.se/swish-cpcapi/api/v1/paymentrequests", test.responder)
 
-		res, err := client.CreatePayment(&PaymentData{
+		res, err := client.CreatePaymentRequest(context.Background(), &PaymentRequest{
 			PayeePaymentReference: "0123456789",
 			CallbackURL:           "https://example.com/api/swishcb/paymentrequests",
 			PayerAlias:            "46701234567",
 			PayeeAlias:            "1234760039",
-			Amount:                100.00,
+			Amount:                "100",
 			Currency:              "SEK",
 			Message:               "Kingston USB Flash Drive 8 GB",
 		})
@@ -101,7 +102,7 @@ func TestPaymentRequest(t *testing.T) {
 	tests := []struct {
 		description    string
 		responder      func(req *http.Request) (*http.Response, error)
-		expectedResult *PaymentData
+		expectedResult *PaymentRequest
 		expectedError  error
 	}{
 		{
@@ -115,7 +116,7 @@ func TestPaymentRequest(t *testing.T) {
                         "callbackUrl": "https://example.com/api/swishcb/paymentrequests",
                         "payerAlias": "46701234567",
                         "payeeAlias": "1234760039",
-                        "amount": 100,
+                        "amount": "100",
                         "currency": "SEK",
                         "message": "Kingston USB Flash Drive 8 GB",
                         "status": "PAID",
@@ -124,14 +125,14 @@ func TestPaymentRequest(t *testing.T) {
                     }
                 `), nil
 			},
-			expectedResult: &PaymentData{
+			expectedResult: &PaymentRequest{
 				ID: "AB23D7406ECE4542A80152D909EF9F6B",
 				PayeePaymentReference: "0123456789",
 				PaymentReference:      "6D6CD7406ECE4542A80152D909EF9F6B",
 				CallbackURL:           "https://example.com/api/swishcb/paymentrequests",
 				PayerAlias:            "46701234567",
 				PayeeAlias:            "1234760039",
-				Amount:                100.00,
+				Amount:                "100",
 				Currency:              "SEK",
 				Message:               "Kingston USB Flash Drive 8 GB",
 				Status:                "PAID",
@@ -162,7 +163,7 @@ func TestPaymentRequest(t *testing.T) {
 	for _, test := range tests {
 		httpmock.RegisterResponder("GET", "https://mss.swicpc.bankgirot.se/swish-cpcapi/api/v1/paymentrequests/AB23D7406ECE4542A80152D909EF9F6B", test.responder)
 
-		res, err := client.Payment("AB23D7406ECE4542A80152D909EF9F6B")
+		res, err := client.PaymentRequest(context.Background(), "AB23D7406ECE4542A80152D909EF9F6B")
 
 		assert.Equal(t, res, test.expectedResult, test.description)
 		assert.Equal(t, err, test.expectedError, test.description)
@@ -179,7 +180,7 @@ func TestCreateRefundRequest(t *testing.T) {
 	tests := []struct {
 		description    string
 		responder      func(req *http.Request) (*http.Response, error)
-		expectedResult *RefundData
+		expectedResult *PaymentRequest
 		expectedError  error
 	}{
 		{
@@ -191,13 +192,13 @@ func TestCreateRefundRequest(t *testing.T) {
 
 				return resp, nil
 			},
-			expectedResult: &RefundData{
+			expectedResult: &PaymentRequest{
 				ID: "AB23D7406ECE4542A80152D909EF9F6B",
 				OriginalPaymentReference: "AB23D7406ECE4542A80152D909EF9F6B",
 				PayerPaymentReference:    "0123456789",
 				CallbackURL:              "https://example.com/api/swishcb/paymentrequests",
 				PayerAlias:               "46701234567",
-				Amount:                   100.00,
+				Amount:                   "100",
 				Currency:                 "SEK",
 				Message:                  "Refund for Kingston USB Flash Drive 8 GB",
 			},
@@ -246,12 +247,12 @@ func TestCreateRefundRequest(t *testing.T) {
 	for _, test := range tests {
 		httpmock.RegisterResponder("POST", "https://mss.swicpc.bankgirot.se/swish-cpcapi/api/v1/refunds", test.responder)
 
-		res, err := client.CreateRefund(&RefundData{
+		res, err := client.CreateRefundRequest(context.Background(), &PaymentRequest{
 			OriginalPaymentReference: "AB23D7406ECE4542A80152D909EF9F6B",
 			PayerPaymentReference:    "0123456789",
 			CallbackURL:              "https://example.com/api/swishcb/paymentrequests",
 			PayerAlias:               "46701234567",
-			Amount:                   100.00,
+			Amount:                   "100",
 			Currency:                 "SEK",
 			Message:                  "Refund for Kingston USB Flash Drive 8 GB",
 		})
@@ -271,7 +272,7 @@ func TestRefundRequest(t *testing.T) {
 	tests := []struct {
 		description    string
 		responder      func(req *http.Request) (*http.Response, error)
-		expectedResult *RefundData
+		expectedResult *PaymentRequest
 		expectedError  error
 	}{
 		{
@@ -280,12 +281,12 @@ func TestRefundRequest(t *testing.T) {
 				return httpmock.NewStringResponse(200, `
                     {
                         "id": "AB23D7406ECE4542A80152D909EF9F6B",
-                        "payerPaymentReference": "0123456789",
+                        "payeePaymentReference": "0123456789",
                         "paymentReference": "6D6CD7406ECE4542A80152D909EF9F6B",
                         "callbackUrl": "https://example.com/api/swishcb/refunds",
                         "payerAlias": "46701234567",
                         "payeeAlias": "1234760039",
-                        "amount": 100,
+                        "amount": "100",
                         "currency": "SEK",
                         "message": "Refund for Kingston USB Flash Drive 8 GB",
                         "status": "PAID",
@@ -294,14 +295,14 @@ func TestRefundRequest(t *testing.T) {
                     }
                 `), nil
 			},
-			expectedResult: &RefundData{
+			expectedResult: &PaymentRequest{
 				ID: "AB23D7406ECE4542A80152D909EF9F6B",
-				PayerPaymentReference: "0123456789",
+				PayeePaymentReference: "0123456789",
 				PaymentReference:      "6D6CD7406ECE4542A80152D909EF9F6B",
 				CallbackURL:           "https://example.com/api/swishcb/refunds",
 				PayerAlias:            "46701234567",
 				PayeeAlias:            "1234760039",
-				Amount:                100.00,
+				Amount:                "100",
 				Currency:              "SEK",
 				Message:               "Refund for Kingston USB Flash Drive 8 GB",
 				Status:                "PAID",
@@ -332,7 +333,7 @@ func TestRefundRequest(t *testing.T) {
 	for _, test := range tests {
 		httpmock.RegisterResponder("GET", "https://mss.swicpc.bankgirot.se/swish-cpcapi/api/v1/refunds/AB23D7406ECE4542A80152D909EF9F6B", test.responder)
 
-		res, err := client.Refund("AB23D7406ECE4542A80152D909EF9F6B")
+		res, err := client.RefundRequest(context.Background(), "AB23D7406ECE4542A80152D909EF9F6B")
 
 		assert.Equal(t, res, test.expectedResult, test.description)
 		assert.Equal(t, err, test.expectedError, test.description)

@@ -21,6 +21,7 @@ Certificates in `certs` directory is the test certificates from Swish and cannot
 package main
 
 import (
+	"context"
 	"log"
 
 	"github.com/frozzare/go-swish"
@@ -38,7 +39,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	res, err := client.CreatePayment(&swish.PaymentData{
+	res, err := client.CreatePayment(context.Background(), &swish.PaymentData{
 		CallbackURL:           "https://example.com/api/swishcb/paymentrequests",
 		PayeePaymentReference: "0123456789",
 		PayeeAlias:            "1231181189",
@@ -53,7 +54,7 @@ func main() {
 
 	log.Println(res.ID)
 
-	res, err = client.Payment(res.ID)
+	res, err = client.Payment(context.Background(), res.ID)
 
 	if err != nil {
 		log.Fatal(err)
