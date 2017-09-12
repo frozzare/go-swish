@@ -11,6 +11,7 @@ import (
 )
 
 var (
+	// ErrNoLocationHeader is the error when no location header exists in the response from Swish API.
 	ErrNoLocationHeader = errors.New("Error: No location header from Swish API")
 )
 
