@@ -5,7 +5,7 @@ Go package for deailing with [Swish](https://www.getswish.se/) merchant API.
 ## Installation
 
 ```
-$ go get -u github.com/frozzare/go-swish
+go get -u github.com/frozzare/go-swish
 ```
 
 ## Usage
