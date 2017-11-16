@@ -10,7 +10,7 @@ go get -u github.com/frozzare/go-swish
 
 ## Usage
 
-Please read the Swish [documentation](https://www.getswish.se/manualer/) first so you know what you need and what the different fields means.
+Please read the Swish [documentation](https://developer.getswish.se/) first so you know what you need and what the different fields means.
 
 Begin by obtaining the SSL certificates required by Swish. The Swish server itself uses a self-signed root certificated so a CA-bundle to verify its origin is needed.
 You will also need a client certificate and corresponding private key so the Swish server can identify you.
