@@ -20,8 +20,10 @@ import (
 type Options struct {
 	Env        string
 	P12        string
+	P12Data    []byte
 	Passphrase string
 	Root       string
+	RootData   []byte
 	Client     *http.Client
 }
 
@@ -71,9 +73,14 @@ func (s *Client) URL() string {
 
 // createTLSConfig creates a TLSConfig with the certificates that are configured.
 func createTLSConfig(opts *Options) (*tls.Config, error) {
-	p12, err := ioutil.ReadFile(opts.P12)
-	if err != nil {
-		return nil, err
+	// Get P12 directly from options or load from file
+	p12 := opts.P12Data
+	if p12 == nil {
+		var err error
+		p12, err = ioutil.ReadFile(opts.P12)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	blocks, err := pkcs12.ToPEM(p12, opts.Passphrase)
@@ -91,11 +98,16 @@ func createTLSConfig(opts *Options) (*tls.Config, error) {
 		return nil, err
 	}
 
-	// Load CA cert
-	caCert, err := ioutil.ReadFile(opts.Root)
-	if err != nil {
-		return nil, err
+	// Get CA cert directly from options or load from file
+	caCert := opts.RootData
+	if caCert == nil {
+		var err error
+		caCert, err = ioutil.ReadFile(opts.Root)
+		if err != nil {
+			return nil, err
+		}
 	}
+
 	caCertPool := x509.NewCertPool()
 	caCertPool.AppendCertsFromPEM(caCert)
 
