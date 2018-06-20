@@ -358,7 +358,7 @@ func TestConfigWithCertificateData(t *testing.T) {
 	p12, err := ioutil.ReadFile(p12File)
 	assert.Nil(t, err)
 
-	root, _ := ioutil.ReadFile(certFile)
+	root, err := ioutil.ReadFile(certFile)
 	assert.Nil(t, err)
 
 	dataConfig, err := createTLSConfig(&Options{
