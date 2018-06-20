@@ -3,6 +3,7 @@ package swish
 import (
 	"context"
 	"errors"
+	"io/ioutil"
 	"net/http"
 	"testing"
 
@@ -340,4 +341,34 @@ func TestRefundRequest(t *testing.T) {
 
 		httpmock.Reset()
 	}
+}
+
+func TestConfigWithCertificateData(t *testing.T) {
+	p12File := "./certs/test.p12"
+	certFile := "./certs/root.pem"
+
+	fileConfig, err := createTLSConfig(&Options{
+		Env:        "test",
+		Passphrase: "swish",
+		P12:        p12File,
+		Root:       certFile,
+	})
+	assert.Nil(t, err)
+
+	p12, err := ioutil.ReadFile(p12File)
+	assert.Nil(t, err)
+
+	root, err := ioutil.ReadFile(certFile)
+	assert.Nil(t, err)
+
+	dataConfig, err := createTLSConfig(&Options{
+		Env:        "test",
+		Passphrase: "swish",
+		P12Data:    p12,
+		RootData:   root,
+	})
+	assert.Nil(t, err)
+
+	// Assert both methods result in the same TLS config
+	assert.Equal(t, fileConfig, dataConfig)
 }
