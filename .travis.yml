@@ -3,11 +3,12 @@ language: go
 go:
  - "1.9"
  - "1.10"
- - "tip"
+ - "1.11"
+ - "master"
 
 script:
  - go test -race $(go list ./... | grep -v /vendor/)
 
 matrix:
   allow_failures:
-    - go: "tip"
+    - go: "master"
