@@ -65,9 +65,9 @@ func NewClient(opts *Options) (*Client, error) {
 func (s *Client) URL() string {
 	switch s.Env {
 	case "production":
-		return "https://swicpc.bankgirot.se/swish-cpcapi/api/v1"
+		return "https://cpc.getswish.net/swish-cpcapi/api/v1"
 	default:
-		return "https://mss.swicpc.bankgirot.se/swish-cpcapi/api/v1"
+		return "https://mss.cpc.getswish.net/swish-cpcapi/api/v1"
 	}
 }
 

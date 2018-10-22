@@ -28,7 +28,7 @@ func TestCreatePaymentRequest(t *testing.T) {
 			responder: func(req *http.Request) (*http.Response, error) {
 				resp := httpmock.NewStringResponse(200, "")
 
-				resp.Header.Set("Location", "https://mss.swicpc.bankgirot.se/swish-cpcapi/api/v1/paymentrequests/AB23D7406ECE4542A80152D909EF9F6B")
+				resp.Header.Set("Location", "https://mss.cpc.getswish.net/swish-cpcapi/api/v1/paymentrequests/AB23D7406ECE4542A80152D909EF9F6B")
 
 				return resp, nil
 			},
@@ -57,7 +57,7 @@ func TestCreatePaymentRequest(t *testing.T) {
 			responder: func(req *http.Request) (*http.Response, error) {
 				resp := httpmock.NewStringResponse(500, "")
 
-				resp.Header.Set("Location", "https://mss.swicpc.bankgirot.se/swish-cpcapi/api/v1/paymentrequests/AB23D7406ECE4542A80152D909EF9F6B")
+				resp.Header.Set("Location", "https://mss.cpc.getswish.net/swish-cpcapi/api/v1/paymentrequests/AB23D7406ECE4542A80152D909EF9F6B")
 
 				return resp, nil
 			},
@@ -76,7 +76,7 @@ func TestCreatePaymentRequest(t *testing.T) {
 	assert.Nil(t, err)
 
 	for _, test := range tests {
-		httpmock.RegisterResponder("POST", "https://mss.swicpc.bankgirot.se/swish-cpcapi/api/v1/paymentrequests", test.responder)
+		httpmock.RegisterResponder("POST", "https://mss.cpc.getswish.net/swish-cpcapi/api/v1/paymentrequests", test.responder)
 
 		res, err := client.CreatePaymentRequest(context.Background(), &PaymentRequest{
 			PayeePaymentReference: "0123456789",
@@ -162,7 +162,7 @@ func TestPaymentRequest(t *testing.T) {
 	assert.Nil(t, err)
 
 	for _, test := range tests {
-		httpmock.RegisterResponder("GET", "https://mss.swicpc.bankgirot.se/swish-cpcapi/api/v1/paymentrequests/AB23D7406ECE4542A80152D909EF9F6B", test.responder)
+		httpmock.RegisterResponder("GET", "https://mss.cpc.getswish.net/swish-cpcapi/api/v1/paymentrequests/AB23D7406ECE4542A80152D909EF9F6B", test.responder)
 
 		res, err := client.PaymentRequest(context.Background(), "AB23D7406ECE4542A80152D909EF9F6B")
 
@@ -189,7 +189,7 @@ func TestCreateRefundRequest(t *testing.T) {
 			responder: func(req *http.Request) (*http.Response, error) {
 				resp := httpmock.NewStringResponse(200, "")
 
-				resp.Header.Set("Location", "https://mss.swicpc.bankgirot.se/swish-cpcapi/api/v1/refunds/AB23D7406ECE4542A80152D909EF9F6B")
+				resp.Header.Set("Location", "https://mss.cpc.getswish.net/swish-cpcapi/api/v1/refunds/AB23D7406ECE4542A80152D909EF9F6B")
 
 				return resp, nil
 			},
@@ -227,7 +227,7 @@ func TestCreateRefundRequest(t *testing.T) {
 			responder: func(req *http.Request) (*http.Response, error) {
 				resp := httpmock.NewStringResponse(500, "")
 
-				resp.Header.Set("Location", "https://mss.swicpc.bankgirot.se/swish-cpcapi/api/v1/paymentrequests/AB23D7406ECE4542A80152D909EF9F6B")
+				resp.Header.Set("Location", "https://mss.cpc.getswish.net/swish-cpcapi/api/v1/paymentrequests/AB23D7406ECE4542A80152D909EF9F6B")
 
 				return resp, nil
 			},
@@ -246,7 +246,7 @@ func TestCreateRefundRequest(t *testing.T) {
 	assert.Nil(t, err)
 
 	for _, test := range tests {
-		httpmock.RegisterResponder("POST", "https://mss.swicpc.bankgirot.se/swish-cpcapi/api/v1/refunds", test.responder)
+		httpmock.RegisterResponder("POST", "https://mss.cpc.getswish.net/swish-cpcapi/api/v1/refunds", test.responder)
 
 		res, err := client.CreateRefundRequest(context.Background(), &PaymentRequest{
 			OriginalPaymentReference: "AB23D7406ECE4542A80152D909EF9F6B",
@@ -332,7 +332,7 @@ func TestRefundRequest(t *testing.T) {
 	assert.Nil(t, err)
 
 	for _, test := range tests {
-		httpmock.RegisterResponder("GET", "https://mss.swicpc.bankgirot.se/swish-cpcapi/api/v1/refunds/AB23D7406ECE4542A80152D909EF9F6B", test.responder)
+		httpmock.RegisterResponder("GET", "https://mss.cpc.getswish.net/swish-cpcapi/api/v1/refunds/AB23D7406ECE4542A80152D909EF9F6B", test.responder)
 
 		res, err := client.RefundRequest(context.Background(), "AB23D7406ECE4542A80152D909EF9F6B")
 
