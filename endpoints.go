@@ -17,23 +17,23 @@ var (
 
 // PaymentRequest represents a payment request from Swish API.
 type PaymentRequest struct {
-	AdditionalInformation    string `json:"additionalInformation,omitempty"`
-	Amount                   string `json:"amount,omitempty"`
-	CallbackURL              string `json:"callbackUrl,omitempty"`
-	Currency                 string `json:"currency,omitempty"`
-	DateCreated              string `json:"dateCreated,omitempty"`
-	DatePaid                 string `json:"datePaid,omitempty"`
-	ErrorCode                string `json:"errorCode,omitempty"`
-	ErrorMessage             string `json:"errorMessage,omitempty"`
-	ID                       string `json:"id,omitempty"`
-	Message                  string `json:"message,omitempty"`
-	PayeeAlias               string `json:"payeeAlias,omitempty"`
-	PayeePaymentReference    string `json:"payeePaymentReference,omitempty"`
-	PayerPaymentReference    string `json:"payerPaymentReference,omitempty"`
-	PayerAlias               string `json:"payerAlias,omitempty"`
-	PaymentReference         string `json:"paymentReference,omitempty"`
-	OriginalPaymentReference string `json:"originalPaymentReference,omitempty"`
-	Status                   string `json:"status,omitempty"`
+	AdditionalInformation    string  `json:"additionalInformation,omitempty"`
+	Amount                   float64 `json:"amount,omitempty"`
+	CallbackURL              string  `json:"callbackUrl,omitempty"`
+	Currency                 string  `json:"currency,omitempty"`
+	DateCreated              string  `json:"dateCreated,omitempty"`
+	DatePaid                 string  `json:"datePaid,omitempty"`
+	ErrorCode                string  `json:"errorCode,omitempty"`
+	ErrorMessage             string  `json:"errorMessage,omitempty"`
+	ID                       string  `json:"id,omitempty"`
+	Message                  string  `json:"message,omitempty"`
+	PayeeAlias               string  `json:"payeeAlias,omitempty"`
+	PayeePaymentReference    string  `json:"payeePaymentReference,omitempty"`
+	PayerPaymentReference    string  `json:"payerPaymentReference,omitempty"`
+	PayerAlias               string  `json:"payerAlias,omitempty"`
+	PaymentReference         string  `json:"paymentReference,omitempty"`
+	OriginalPaymentReference string  `json:"originalPaymentReference,omitempty"`
+	Status                   string  `json:"status,omitempty"`
 }
 
 // CreatePaymentRequest will create a payment request to Swish and return a payment
