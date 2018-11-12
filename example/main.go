@@ -30,10 +30,10 @@ func init() {
 
 func create(w http.ResponseWriter, r *http.Request) {
 	res, err := client.CreatePaymentRequest(context.Background(), &swish.PaymentRequest{
-		CallbackURL:           "https://c06610e4.ngrok.io",
+		CallbackURL:           "https://c06610e4.ngrok.io/callback",
 		PayeePaymentReference: "0123456789",
 		PayeeAlias:            "1231181189",
-		Amount:                "100.00",
+		Amount:                100.00,
 		Currency:              "SEK",
 		Message:               "Kingston USB Flash Drive 8 GB",
 	})
