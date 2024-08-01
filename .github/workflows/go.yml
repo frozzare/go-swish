@@ -1,0 +1,27 @@
+name: Go
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        go-version: [olstable, stable]
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v4
+      
+    - name: Set up Go ${{ matrix.go-version }}
+      uses: actions/setup-go@v5
+      with:
+        go-version: ${{ matrix.go-version }}
+
+    - name: Run tests
+      run: go test -race $(go list ./... | grep -v /vendor/)
