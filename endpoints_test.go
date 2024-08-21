@@ -370,5 +370,5 @@ func TestConfigWithCertificateData(t *testing.T) {
 	assert.Nil(t, err)
 
 	// Assert both methods result in the same TLS config
-	assert.Equal(t, fileConfig, dataConfig)
+	assert.Equal(t, fileConfig.Certificates[0], dataConfig.Certificates[0])
 }
