@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        go-version: [olstable, stable]
+        go-version: [oldstable, stable]
 
     steps:
     - name: Check out code
