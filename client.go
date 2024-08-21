@@ -10,8 +10,8 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
+	"os"
 
 	"golang.org/x/crypto/pkcs12"
 )
@@ -77,7 +77,7 @@ func createTLSConfig(opts *Options) (*tls.Config, error) {
 	p12 := opts.P12Data
 	if p12 == nil {
 		var err error
-		p12, err = ioutil.ReadFile(opts.P12)
+		p12, err = os.ReadFile(opts.P12)
 		if err != nil {
 			return nil, err
 		}
@@ -102,7 +102,7 @@ func createTLSConfig(opts *Options) (*tls.Config, error) {
 	caCert := opts.RootData
 	if caCert == nil {
 		var err error
-		caCert, err = ioutil.ReadFile(opts.Root)
+		caCert, err = os.ReadFile(opts.Root)
 		if err != nil {
 			return nil, err
 		}
@@ -174,7 +174,7 @@ func (s *Client) createRequest(ctx context.Context, method, endpoint string, dat
 func readChuncked(res *http.Response, target interface{}) error {
 	defer func() {
 		// Drain up to 512 bytes and close the body to let the Transport reuse the connection.
-		io.CopyN(ioutil.Discard, res.Body, 512)
+		io.CopyN(io.Discard, res.Body, 512)
 		res.Body.Close()
 	}()
 

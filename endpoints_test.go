@@ -3,8 +3,8 @@ package swish
 import (
 	"context"
 	"errors"
-	"io/ioutil"
 	"net/http"
+	"os"
 	"testing"
 
 	"github.com/frozzare/go-assert"
@@ -355,10 +355,10 @@ func TestConfigWithCertificateData(t *testing.T) {
 	})
 	assert.Nil(t, err)
 
-	p12, err := ioutil.ReadFile(p12File)
+	p12, err := os.ReadFile(p12File)
 	assert.Nil(t, err)
 
-	root, err := ioutil.ReadFile(certFile)
+	root, err := os.ReadFile(certFile)
 	assert.Nil(t, err)
 
 	dataConfig, err := createTLSConfig(&Options{

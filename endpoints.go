@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"errors"
 	"io"
-	"io/ioutil"
 
 	"strings"
 )
@@ -64,7 +63,7 @@ func (c *Client) PaymentRequest(ctx context.Context, id string) (*PaymentRequest
 
 	defer func() {
 		// Drain up to 512 bytes and close the body to let the Transport reuse the connection.
-		io.CopyN(ioutil.Discard, res.Body, 512)
+		io.CopyN(io.Discard, res.Body, 512)
 		res.Body.Close()
 	}()
 
@@ -105,7 +104,7 @@ func (c *Client) RefundRequest(ctx context.Context, id string) (*PaymentRequest,
 
 	defer func() {
 		// Drain up to 512 bytes and close the body to let the Transport reuse the connection.
-		io.CopyN(ioutil.Discard, res.Body, 512)
+		io.CopyN(io.Discard, res.Body, 512)
 		res.Body.Close()
 	}()
 
