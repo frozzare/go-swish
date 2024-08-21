@@ -1,4 +1,4 @@
-# Swish [![Build Status](https://travis-ci.org/frozzare/go-swish.svg?branch=master)](https://travis-ci.org/frozzare/go-swish) [![GoDoc](https://godoc.org/github.com/frozzare/go-swish?status.svg)](https://godoc.org/github.com/frozzare/go-swish) [![Go Report Card](https://goreportcard.com/badge/github.com/frozzare/go-swish)](https://goreportcard.com/report/github.com/frozzare/go-swish)
+# Swish [![Build Status](https://img.shields.io/github/actions/workflow/status/frozzare/go-swish/go.yml)](https://github.com/frozzare/go-swish/actions?query=workflow%3AGo) [![GoDoc](https://godoc.org/github.com/frozzare/go-swish?status.svg)](https://godoc.org/github.com/frozzare/go-swish) [![Go Report Card](https://goreportcard.com/badge/github.com/frozzare/go-swish)](https://goreportcard.com/report/github.com/frozzare/go-swish)
 
 Go package for dealing with [Swish](https://www.getswish.se/) merchant API.
 
